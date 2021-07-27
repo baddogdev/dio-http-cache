@@ -6,9 +6,7 @@ import 'store_impl.dart';
 class StoreHive extends ICacheStore {
   static final String storeName = "http_cache";
 
-  final String? subDir;
-
-  StoreHive(this.subDir) {
+  StoreHive() {
     Hive.registerAdapter(CacheObjAdapter());
   }
 

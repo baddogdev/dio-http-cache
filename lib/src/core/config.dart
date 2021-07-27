@@ -11,8 +11,6 @@ class CacheConfig {
 
   final int maxMemoryCacheCount;
 
-  final String? diskSubDir;
-
   final ICacheStore? diskStore;
 
   CacheConfig({
@@ -23,7 +21,6 @@ class CacheConfig {
     this.skipDiskCache = false,
     this.skipMemoryCache = false,
     this.maxMemoryCacheCount = 100,
-    this.diskSubDir,
     this.diskStore,
   });
 }

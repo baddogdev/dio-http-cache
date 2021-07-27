@@ -16,7 +16,7 @@ class CacheManager {
   CacheManager(this._config) {
     _utf8encoder = const Utf8Encoder();
     if (!_config.skipDiskCache) {
-      _diskCacheStore = _config.diskStore ?? StoreHive(_config.diskSubDir);
+      _diskCacheStore = _config.diskStore ?? StoreHive();
     }
 
     if (!_config.skipMemoryCache) {
