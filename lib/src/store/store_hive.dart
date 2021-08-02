@@ -7,7 +7,13 @@ class StoreHive extends ICacheStore {
   static final String storeName = "http_cache";
 
   StoreHive() {
-    Hive.registerAdapter(CacheObjAdapter());
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(CacheObjAdapter());
+    }
+
+    if (Hive.isBoxOpen(storeName)) {
+      Hive.box<CacheObj>(storeName).close();
+    }
   }
 
   Future<Box<CacheObj>> openBox() async {
