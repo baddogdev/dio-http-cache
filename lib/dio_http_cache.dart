@@ -5,3 +5,4 @@ export 'src/core/config.dart';
 export 'src/core/cache_obj.dart';
 export 'src/manager_dio.dart';
 export 'src/store/store_impl.dart';
+export 'src/store/store_hive.dart';

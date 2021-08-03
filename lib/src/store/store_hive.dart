@@ -6,36 +6,24 @@ import 'store_impl.dart';
 class StoreHive extends ICacheStore {
   static final String storeName = "http_cache";
 
-  StoreHive() {
-    if (!Hive.isAdapterRegistered(0)) {
-      Hive.registerAdapter(CacheObjAdapter());
-    }
+  StoreHive();
 
-    if (Hive.isBoxOpen(storeName)) {
-      Hive.box<CacheObj>(storeName).close();
-    }
-  }
-
-  Future<Box<CacheObj>> openBox() async {
-    if (Hive.isBoxOpen(storeName)) {
-      return Hive.box<CacheObj>(storeName);
-    }
-
-    var box = await Hive.openBox<CacheObj>(storeName);
-    return box;
+  /// control hive box external
+  Box<CacheObj> _getBox() {
+    return Hive.box<CacheObj>(storeName);
   }
 
   @override
   Future<bool> clearAll() async {
-    var box = await openBox();
-    await box.clear();
+    var box = _getBox();
+    box.clear();
 
     return true;
   }
 
   @override
   Future<bool> clearExpired() async {
-    var box = await openBox();
+    var box = _getBox();
     var now = DateTime.now().millisecondsSinceEpoch;
     for (var i = box.length - 1; i >= 0; i--) {
       var obj = box.getAt(i)!;
@@ -50,7 +38,7 @@ class StoreHive extends ICacheStore {
 
   @override
   Future<bool> delete(String key, {String? subKey}) async {
-    var box = await openBox();
+    var box = _getBox();
     String objKey = "${key}_$subKey";
     await box.delete(objKey);
 
@@ -59,7 +47,7 @@ class StoreHive extends ICacheStore {
 
   @override
   Future<CacheObj?> getCacheObj(String key, {String? subKey = ""}) async {
-    var box = await openBox();
+    var box = _getBox();
     String objKey = "${key}_$subKey";
     var cacheObj = box.get(objKey);
     return cacheObj;
@@ -67,7 +55,7 @@ class StoreHive extends ICacheStore {
 
   @override
   Future<bool> setCacheObj(CacheObj obj) async {
-    var box = await openBox();
+    var box = _getBox();
     String objKey = "${obj.key}_${obj.subKey}";
     await box.put(objKey, obj);
 
